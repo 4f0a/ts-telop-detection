@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Check Results</title>
+		<!-- UIkit CSS -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.35/css/uikit.min.css" />
+		
+		<!-- UIkit JS -->
+		<script src="uikit/js/uikit.min.js"></script>
+		<script src="uikit/js/uikit-icons.min.js"></script>
+	</head>
+
+	<body>
+		<div class="uk-container uk-margin-top">
+			<h1>Check Results</h1>
+			<article class="uk-article">
+				<p class="uk-article-meta" id="update-time-drop"></p>
+				<p class="uk-article-meta" id="update-time-telop"></p>
+			</article>
+		</div>
+		<div class="uk-section">
+			<div class="uk-container">
+				<table class="uk-table uk-table-striped">
+					<thead>
+						<tr>
+							<th>File</th>
+							<th>Drop</th>
+							<th>Telop</th>
+						</tr>
+					</thead>
+					<tbody id="tbody-main">
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div id="drop-detail" uk-modal>
+			<div class="uk-modal-dialog uk-modal-body">
+				<button class="uk-modal-close-default" type="button" uk-close></button>
+				<h2 class="uk-modal-title">Drop Detail</h2>
+				<table class="uk-table uk-table-striped">
+					<thead>
+						<tr>
+							<th>PID</th>
+							<th>In</th>
+							<th>Drop</th>
+							<th>Scr</th>
+						</tr>
+					</thead>
+					<tbody id="tbody-drop-detail">
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div id="telop-detail" uk-modal>
+			<div class="uk-modal-dialog uk-modal-body">
+				<button class="uk-modal-close-default" type="button" uk-close></button>
+				<h2 class="uk-modal-title">Telop Detail</h2>
+				<table class="uk-table uk-table-striped">
+					<tbody id="tbody-telop-detail">
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<script type="text/javascript" src="scripts/main.js"></script>
+	</body>
+</html>

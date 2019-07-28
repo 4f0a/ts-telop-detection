@@ -1,0 +1,10 @@
+__pycache__/
+.vscode/
+data/
+test_data/
+*_dev.py
+*_old.py
+*.zip
+google_error.txt
+googleTest.py
+test.py
