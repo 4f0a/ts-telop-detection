@@ -26,6 +26,9 @@ function addDrops(target, completion) {
                             element_1.maxDrop = 0;
                         }
                         //console.log(element.maxDrop);
+                        if (element_1.totalDropError == null) {
+                            element_1.totalDropError = 0;
+                        }
                         var row = document.createElement("tr");
                         var cellName = document.createElement("td");
                         cellName.textContent = key;

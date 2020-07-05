@@ -4,6 +4,7 @@ import json
 import os
 import subprocess
 import traceback
+import cache_io
 from config import *
 
 
@@ -126,19 +127,6 @@ def check_ts_error(path):
     return dat
 
 
-def load_cache_data(file_path: str) -> {}:
-    data = {}
-    if (os.path.exists(file_path)):
-        with open(file_path, "r") as f:
-            string = f.read()
-            if len(string):
-                dat = json.loads(string)
-                if dat["data"]:
-                    data = dat["data"]
-    
-    return data
-
-
 def check_files_in_directory(dir_path: str, cache_data: {}) -> {}:
     files = glob.glob(os.path.join(dir_path, "*"))
     for path in files:
@@ -159,17 +147,11 @@ def check_files_in_directory(dir_path: str, cache_data: {}) -> {}:
     return cache_data
 
 
-def save_cache_data(file_path: str, cache_data: {}):
-    with open(file_path, "w") as f:
-        f.seek(0)
-        data = {}
-        data["date"] = datetime.datetime.today().strftime("%Y/%m/%d %H:%M:%S")
-        data["data"] = cache_data
-        f.write(json.dumps(data))
-
-
 if __name__ == "__main__":
-    cache = load_cache_data(DROP_CHECK_OUTPUT_PATH)
+    cache = cache_io.load_cache_data(DROP_CHECK_OUTPUT_PATH)
+    if cache == None:
+        cache = {}
+
     to_delete =[]
     for path in cache:
         if os.path.exists(path) is False:
@@ -185,4 +167,4 @@ if __name__ == "__main__":
     #print(dat)
 
     #print(cache)
-    save_cache_data(DROP_CHECK_OUTPUT_PATH, results)
+    cache_io.save_cache_data(DROP_CHECK_OUTPUT_PATH, results)

@@ -6,6 +6,7 @@ import os
 import shutil
 import subprocess
 import traceback
+import cache_io
 from config import *
 
 
@@ -43,6 +44,8 @@ mx_acception = [
     ]
 
 def should_process_for_file(file_path):
+    if os.path.getsize(file_path) == 0:
+        return False
     if file_path.endswith(".ts") is False and file_path.endswith(".m2ts") is False:
         return False
     if file_path.find("タイトル未定") >= 0:
@@ -59,27 +62,6 @@ def should_process_for_file(file_path):
     if file_path.find("のど自慢") >= 0:
         return False
     return True
-
-
-def load_cache_data(file_path: str) -> {}:
-    data = {}
-    if (os.path.exists(file_path)):
-        with open(file_path, "r") as f:
-            string = f.read()
-            if len(string):
-                dat = json.loads(string)
-                if dat["data"]:
-                    data = dat["data"]
-    return data
-
-
-def save_cache_data(file_path: str, cache_data: {}):
-    with open(file_path, "w") as f:
-        f.seek(0)
-        data = {}
-        data["date"] = datetime.datetime.today().strftime("%Y/%m/%d %H:%M:%S")
-        data["data"] = cache_data
-        f.write(json.dumps(data))
 
 
 def sample_frames_of_files_in_directory(dir_path: str, output_dir_path: str):
@@ -110,7 +92,10 @@ def sample_frames_of_files_in_directory(dir_path: str, output_dir_path: str):
 
 
 if __name__ == "__main__":
-    cache = load_cache_data(TELOP_CHECK_OUTPUT_PATH)
+    cache = cache_io.load_cache_data(TELOP_CHECK_OUTPUT_PATH)
+    if cache == None:
+        exit()
+
     to_delete =[]
     for path in cache:
         if os.path.exists(path) is False or os.path.isdir(path):
@@ -125,6 +110,6 @@ if __name__ == "__main__":
             shutil.rmtree(dir_path)
         cache.pop(path)
 
-    save_cache_data(TELOP_CHECK_OUTPUT_PATH, cache)
+    cache_io.save_cache_data(TELOP_CHECK_OUTPUT_PATH, cache)
 
     sample_frames_of_files_in_directory(VIDEO_DIR_PATH, SAMPLED_FRAMES_CACHE_DIR_PATH)

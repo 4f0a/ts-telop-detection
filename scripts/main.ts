@@ -48,6 +48,9 @@ function addDrops(target: HTMLElement, completion: () => void) {
 							element.maxDrop = 0;
 						}
 						//console.log(element.maxDrop);
+						if (element.totalDropError == null) {
+							element.totalDropError = 0;
+						}
 						const row = document.createElement("tr");
 						const cellName = document.createElement("td");
 						cellName.textContent = key;

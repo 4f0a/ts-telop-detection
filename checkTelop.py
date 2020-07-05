@@ -12,6 +12,7 @@ import time
 import traceback
 import urllib.request
 from PIL import Image, ImageMath
+import cache_io
 import sampleFrames
 from config import *
 
@@ -281,34 +282,15 @@ def detect_telopped_image(mcb, dir_path, binarization_mode):
     return dat
 
 
-def should_process_file(file_path: str, cache_path: str):
-    cache = {}
-    if (os.path.exists(cache_path)):
-        with open(cache_path, "r") as f:
-            string = f.read()
-            if len(string):
-                dat = json.loads(string)
-                if dat["data"]:
-                    cache = dat["data"]
-    return file_path not in cache
+def should_process_file(file_path: str, cache_path: str) -> bool:
+    cache = cache_io.load_cache_data(cache_path)
+    return cache != None and file_path not in cache
 
 
-def add_data_to_cache_file(key, item_data, cache_path: str):
-    cache = {}
-    if (os.path.exists(cache_path)):
-        with open(cache_path, "r") as f:
-            string = f.read()
-            if len(string):
-                dat = json.loads(string)
-                if dat["data"]:
-                    cache = dat["data"]
+def add_data_to_cache_file(key, item_data, cache_path: str) -> bool:
+    cache = cache_io.load_cache_data(cache_path)
     cache[key] = item_data
-    with open(cache_path, "w") as f:
-        f.seek(0)
-        data = {}
-        data["date"] = datetime.datetime.today().strftime("%Y/%m/%d %H:%M:%S")
-        data["data"] = cache
-        f.write(json.dumps(data))
+    return cache_io.save_cache_data(cache_path, cache)
 
 
 def check_telop_of_file_in_directory(dir_path: str, frames_dir_path: str, cache_path:str):
